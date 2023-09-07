@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Details</title>
+</head>
+<body>
+<h1>Task Details</h1>
+<div>
+    <h2 th:text="${task.title}">Sample Task</h2>
+    <p th:text="${task.description}">Task Description</p>
+    <p>Due Date: <span th:text="${task.dueDate}">2023-09-30</span></p>
+</div>
+<a th:href="@{'/tasks/' + ${task.id} + '/edit'}" >Edit</a>
+<a th:href="@{'/tasks/' + ${task.id} + '/delete'}">Delete</a>
+<a th:href="@{/tasks/user/{userId}(userId=${userId})}">Back to Task List</a>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+</head>
+<body>
+<h1>Edit Task</h1>
+<form th:action="@{/tasks/{id}/edit(id=${task.id})}"
+
+      th:object="${task}" method="post">
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" th:field="*{title}" required>
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" th:field="*{description}" required></textarea>
+    </div>
+    <div>
+        <label for="dueDate">Due Date:</label>
+        <input type="date" id="dueDate" name="dueDate" th:field="*{dueDate}" required>
+    </div>
+    <div>
+        <label for="completed">Completed:</label>
+        <input type="checkbox" id="completed" name="completed" th:field="*{completed}" required>
+    </div>
+
+    <button type="submit">Save Changes</button>
+</form>
+<a th:href="@{/tasks/user/{userId}(userId=${userId})}">Cancel</a>
+</body>
+</html>

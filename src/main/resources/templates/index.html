@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        border: 1px solid #dcdcdc;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+
+    .jumbotron {
+        background: linear-gradient(135deg, #007bff 0%, #00bcd4 100%);
+        color: #ffffff;
+        padding: 30px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        transition: background-color 0.3s;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+        border-color: #545b62;
+    }
+
+    .features {
+        margin-top: 30px;
+    }
+
+    .feature-icon {
+        font-size: 40px;
+        color: #007bff;
+    }
+
+    .feature-title {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    .feature-description {
+        margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1>Welcome to Task Manager</h1>
+    <p>Your all-in-one task management solution</p>
+  </div>
+  <div class="text-center">
+    <a class="btn btn-primary btn-lg mr-2" th:href="@{users/sign-in}">Sign In</a>
+    <a class="btn btn-secondary btn-lg" th:href="@{users/sign-up}">Sign Up</a>
+  </div>
+  <div class="features mt-5">
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <div class="feature-icon">
+          <i class="fa fa-tasks"></i>
+        </div>
+        <div class="feature-title">Task Management</div>
+        <div class="feature-description">Organize your tasks with ease.</div>
+      </div>
+      <div class="col-md-4 text-center">
+        <div class="feature-icon">
+          <i class="fa fa-calendar"></i>
+        </div>
+        <div class="feature-title">Calendar Integration</div>
+        <div class="feature-description">Sync your tasks with your calendar.</div>
+      </div>
+      <div class="col-md-4 text-center">
+        <div class="feature-icon">
+          <i class="fa fa-users"></i>
+        </div>
+        <div class="feature-title">Collaboration</div>
+        <div class="feature-description">Work together with your team.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<h5 style="center"> <span th:text="${msg}"></span></h5>
+
+</body>
+</html>
