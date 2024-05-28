@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Task Details</h1>
-<div>
-    <h2 th:text="${task.title}">Sample Task</h2>
-    <p th:text="${task.description}">Task Description</p>
-    <p>Due Date: <span th:text="${task.dueDate}">2023-09-30</span></p>
+<div class="container mt-5">
+    <h1 class="mb-4">Task Details</h1>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" th:text="${task.title}">Sample Task</h2>
+            <p class="card-text" th:text="${task.description}">Task Description</p>
+            <p class="card-text">Due Date: <span th:text="${task.dueDate}">2023-09-30</span></p>
+            <a th:href="@{'/tasks/' + ${task.id} + '/edit'}" class="btn btn-warning">Edit</a>
+            <a th:href="@{'/tasks/' + ${task.id} + '/delete'}" class="btn btn-danger">Delete</a>
+            <a th:href="@{/tasks/user/{userId}(userId=${userId})}" class="btn btn-secondary">Back to Task List</a>
+        </div>
+    </div>
 </div>
-<a th:href="@{'/tasks/' + ${task.id} + '/edit'}" >Edit</a>
-<a th:href="@{'/tasks/' + ${task.id} + '/delete'}">Delete</a>
-<a th:href="@{/tasks/user/{userId}(userId=${userId})}">Back to Task List</a>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
