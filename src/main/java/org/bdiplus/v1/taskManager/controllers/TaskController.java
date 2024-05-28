@@ -30,8 +30,10 @@ public class TaskController {
 
 
     @GetMapping("user/{userId}")
-    public String getAllTasks(Model model, @PathVariable("userId") Long userId) {
-        List<Task> tasks = taskService.getAllTasks();
+    public String getAllTasks(Model model, @PathVariable("userId") Long userId) throws Exception {
+      Optional<User> opUser= Optional.ofNullable(userService.getUserById(userId).orElseThrow(() -> new Exception("User not found Exception")));
+     User user = opUser.get();
+        List<Task> tasks = taskService.getAllTasksByUser(user);
         model.addAttribute("tasks", tasks);
         model.addAttribute("userId", userId);
         return "task-list";
@@ -79,7 +81,8 @@ public class TaskController {
    @PostMapping("/{taskId}/edit")
     public String updateTask(@PathVariable Long taskId, @ModelAttribute("task") Task task, Model model) {
         taskService.updateTask(taskId, task);
-        List<Task> tasks = taskService.getAllTasks();
+       User userByTasksId = userService.getUserByTasksId(taskId);
+       List<Task> tasks = taskService.getAllTasksByUser(userByTasksId);
         model.addAttribute("tasks", tasks);
         return "task-list";
     }
