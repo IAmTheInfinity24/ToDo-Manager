@@ -25,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getAllTasksByUser(User user) {
-        return taskRepo.findTaskByUser(user);
+        return taskRepo.findByCreatedBy(user);
     }
 
     @Override

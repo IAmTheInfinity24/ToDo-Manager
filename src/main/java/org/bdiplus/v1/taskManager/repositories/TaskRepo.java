@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TaskRepo extends JpaRepository<Task, Long> {
 
-    List<Task> findTaskByUser(User user);
+    List<Task> findByCreatedBy(User user);
 }

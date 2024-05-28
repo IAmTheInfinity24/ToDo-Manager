@@ -46,8 +46,9 @@ public class RestTaskController {
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("user/{userId}")
     public ResponseEntity<List<Task>> getAllTasks(@PathVariable("userId") Long userId) throws Exception {
-        Optional<User> opUser= Optional.ofNullable(userService.getUserById(userId).orElseThrow(() -> new Exception("User not found Exception")));
-        User user = opUser.get();
+        Optional<User> opUser = userService.getUserById(userId);
+        User user = opUser.orElseThrow(() -> new Exception("User not found Exception"));
+
         List<Task> tasks = taskService.getAllTasksByUser(user);
         return ResponseEntity.ok(tasks);
     }
