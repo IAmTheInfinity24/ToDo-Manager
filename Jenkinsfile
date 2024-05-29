@@ -16,7 +16,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean install'  // Your Maven build command
+                bat 'mvn clean install'  // Use `bat` for Windows Command Prompt
             }
         }
 
@@ -31,15 +31,13 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 sshagent (credentials: ['${env.SSH_CREDENTIALS_ID}']) {
-                    sh """
-                        scp -o StrictHostKeyChecking=no Dockerfile MyVM_1@${env.EC2_INSTANCE_IP}:~/Dockerfile
-                        scp -o StrictHostKeyChecking=no target/*.jar MyVM_1@${env.EC2_INSTANCE_IP}:~/app.jar
-                        ssh -o StrictHostKeyChecking=no MyVM_1@${env.EC2_INSTANCE_IP} << EOF
-                        docker build -t ${env.DOCKER_IMAGE_NAME}:latest -f ~/Dockerfile .
-                        docker stop ${env.DOCKER_IMAGE_NAME} || true
-                        docker rm ${env.DOCKER_IMAGE_NAME} || true
-                        docker run -d -p 8080:8080 --name ${env.DOCKER_IMAGE_NAME} ${env.DOCKER_IMAGE_NAME}:latest
-                        EOF
+                    bat """
+                        scp Dockerfile MyVM_1@${env.EC2_INSTANCE_IP}:\\
+                        scp target\\*.jar MyVM_1@${env.EC2_INSTANCE_IP}:\\
+                        ssh MyVM_1@${env.EC2_INSTANCE_IP} "docker build -t ${env.DOCKER_IMAGE_NAME}:latest -f Dockerfile ."
+                        ssh MyVM_1@${env.EC2_INSTANCE_IP} "docker stop ${env.DOCKER_IMAGE_NAME} || true"
+                        ssh MyVM_1@${env.EC2_INSTANCE_IP} "docker rm ${env.DOCKER_IMAGE_NAME} || true"
+                        ssh MyVM_1@${env.EC2_INSTANCE_IP} "docker run -d -p 8080:8080 --name ${env.DOCKER_IMAGE_NAME} ${env.DOCKER_IMAGE_NAME}:latest"
                     """
                 }
             }
