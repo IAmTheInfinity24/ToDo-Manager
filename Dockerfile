@@ -1,7 +1,7 @@
 # Use an official OpenJDK runtime as a parent image
 FROM openjdk:17-jdk
 
-
+FROM maven:3.6.3-jdk-11-slim
 
 # Copy the executable JAR file from the host to the container
 COPY target/taskManager-0.0.1-SNAPSHOT.jar /usr/app/
