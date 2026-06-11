@@ -1,89 +1,299 @@
-# taskManager
-Task Manager Spring Boot Application Documentation
-Table of Contents
-Introduction
-Prerequisites
-Getting Started
-3.1. Cloning the Repository
-3.2. Setting up the Database
-3.3. Configuring the Application
-Running the Application
-4.1. Using an IDE (IntelliJ IDEA or STS)
-Testing the APIs
-5.1. API Documentation
-5.2. Testing with Postman
-Conclusion
-1. Introduction
-This documentation provides instructions on how to run the Task Manager Spring Boot Application, set up the necessary environment, and test the APIs. The "TASK MANAGER" is a sample Spring Boot application that demonstrates basic CRUD operations for a hypothetical entity, such as "Task."
+# Task Manager
 
-Features of the Application:
-User Sign-up and Sign-in Feature
-CRUD Operation on Tasks
-Logout Feature
-Securing application with Spring Security
-Validations using Spring validations
-Global Exception Handling Feature
-API Documentation
-Dynamic Front-End Pages Using Thymeleaf Template engine
-2. Prerequisites
-Before you begin, ensure that you have the following prerequisites installed on your system:
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Maven](https://img.shields.io/badge/Build-Maven-blue.svg)](https://maven.apache.org/)
+[![Database](https://img.shields.io/badge/Database-H2%20%7C%20MySQL-lightgrey.svg)](#database-profiles)
+[![API Docs](https://img.shields.io/badge/API-OpenAPI%20Swagger-success.svg)](#api-documentation)
 
-Java JDK 17
-Apache Maven
-MySQL Database
-An Integrated Development Environment (IDE) like IntelliJ IDEA or Eclipse (optional but recommended)
-Postman (for API testing, optional)
-3. Getting Started
-3.1. Cloning the Repository
-Clone the project repository from GitHub:
-GitHub Link: https://github.com/IAmTheInfinity24/taskManager
+A Spring Boot task management application with Thymeleaf pages, REST APIs, JWT-based API authentication, validation, global exception handling, and database-backed task persistence.
 
-3.2. Setting up the Database
-This application uses MySQL Database. Following configuration is required for the database setup:
+## Table of Contents
 
-properties
-Copy code
-# Database Configuration
-spring.datasource.url=jdbc:mysql://localhost:3306/taskmanager_db
-spring.datasource.username=root
-spring.datasource.password=your-password
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-3.3. Configuring the Application
-You can configure the application properties in the application.properties file located in the src/main/resources directory.
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Database Profiles](#database-profiles)
+- [Application URLs](#application-urls)
+- [REST API](#rest-api)
+- [API Documentation](#api-documentation)
+- [Build and Test](#build-and-test)
+- [Docker](#docker)
+- [CI and Code Quality](#ci-and-code-quality)
+- [Troubleshooting](#troubleshooting)
 
-properties
-Copy code
-# Server Configuration
-server.port=8080
-server.servlet.context-path=/taskmanager
+## Overview
 
-# Hibernate Configuration
+Task Manager helps users register, sign in, and manage personal tasks. It includes both server-rendered web pages and JSON endpoints, making it useful as a full-stack Spring MVC sample as well as a REST API learning project.
+
+The default development profile uses an in-memory H2 database, so the project can run locally without installing MySQL. A production profile is included for MySQL deployments.
+
+## Features
+
+- User sign-up and sign-in pages
+- Task create, view, update, and delete workflows
+- Thymeleaf-based web interface
+- REST APIs for task management
+- JWT token generation for API authentication
+- Spring Security configuration
+- Bean validation for users and tasks
+- Global exception handling
+- Swagger/OpenAPI documentation
+- H2 development database profile
+- MySQL production database profile
+- Maven wrapper support
+- Dockerfile and Jenkins pipeline files
+- Qodana static-analysis configuration
+
+## Tech Stack
+
+| Area | Technology |
+| --- | --- |
+| Language | Java 21 |
+| Framework | Spring Boot 3.1.3 |
+| Web | Spring MVC, Thymeleaf |
+| Security | Spring Security, JWT |
+| Persistence | Spring Data JPA, Hibernate |
+| Databases | H2 for development, MySQL for production |
+| API Docs | Springdoc OpenAPI / Swagger UI |
+| Build | Maven |
+| Utilities | Lombok, ModelMapper |
+
+## Project Structure
+
+```text
+.
+|-- src/main/java/org/bdiplus/v1/taskManager
+|   |-- config/                 # Spring, security, Swagger, and bean configuration
+|   |-- controllers/            # MVC and REST controllers
+|   |-- entities/               # JPA entities
+|   |-- exceptionHandling/      # Application exceptions and handlers
+|   |-- payloads/               # Request/response DTOs
+|   |-- repositories/           # Spring Data repositories
+|   |-- security/               # JWT authentication classes
+|   `-- services/               # Service interfaces and implementations
+|-- src/main/resources
+|   |-- templates/              # Thymeleaf views
+|   |-- application.properties
+|   |-- application-dev.properties
+|   `-- application-prod.properties
+|-- Dockerfile
+|-- Jenkinsfile
+|-- pom.xml
+`-- qodana.yaml
+```
+
+## Prerequisites
+
+Install the following before running the project:
+
+- Java JDK 21
+- Maven 3.8+ or the included Maven wrapper
+- Git
+- MySQL 8+ only when running with the `prod` profile
+- Postman, curl, or another API client for REST testing
+
+## Quick Start
+
+Clone the repository:
+
+```bash
+git clone https://github.com/IAmTheInfinity24/taskManager.git
+cd taskManager
+```
+
+Run the application with the default development profile:
+
+```bash
+./mvnw spring-boot:run
+```
+
+On Windows PowerShell:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+Open the web application:
+
+```text
+http://localhost:8080/
+```
+
+## Database Profiles
+
+### Development: H2
+
+The default `application.properties` activates the `dev` profile:
+
+```properties
+spring.profiles.active=dev
+```
+
+The dev profile uses an in-memory H2 database:
+
+```properties
+spring.datasource.url=jdbc:h2:mem:taskmanager_db
+spring.datasource.username=sa
+spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-4. Running the Application
-4.1 Using an IDE (e.g., IntelliJ IDEA or Eclipse)
-Import the project into your IDE. Right-click on the TaskManagerApplication.java class and select "Run" to start the application.
+```
 
-Instructions to Run the Application:
+H2 console:
 
-The application will start at the default port 8080.
-Access the application by visiting http://localhost:8080/taskmanager/.
-The landing page will appear with options for SIGN-IN and SIGN-UP.
-After successful sign-up, user details will be stored in the database, and the user can sign in.
-Users can create tasks, view all tasks, and log out of the application.
-5. Testing the APIs
-5.1. API Documentation
-The API documentation is generated using Swagger. Once the application is running, you can access the API documentation at: http://localhost:8080/swagger-ui.html
+```text
+http://localhost:8080/h2-console
+```
 
-5.2. Testing with Postman
-You can use Postman to interact with the APIs. Create appropriate HTTP requests and hit the URLs to access the resources:
+Use these connection values in the console:
 
-GET: /apis/tasks/{taskId} - Retrieve a task by ID
-PUT: /apis/tasks/{taskId} - Update a task by ID
-DELETE: /apis/tasks/{taskId} - Delete a task by ID
-POST: /apis/tasks/new/{userId} - Create a new task for a user
-GET: /apis/tasks/user/{userId} - Retrieve all tasks
-6. Conclusion
-You have successfully set up, run, and tested the "Task Manager" Spring Boot application. Feel free to explore the API documentation and customize the application for your needs. For any issues or questions, please refer to the project's GitHub repository or contact the project creator.
+| Field | Value |
+| --- | --- |
+| JDBC URL | `jdbc:h2:mem:taskmanager_db` |
+| User Name | `sa` |
+| Password | leave blank |
 
-Thank you for using "Task Manager!"
+### Production: MySQL
+
+The `prod` profile is configured in `src/main/resources/application-prod.properties`.
+
+Before deploying, replace placeholder credentials with environment-specific secrets and avoid committing real passwords:
+
+```properties
+spring.datasource.url=jdbc:mysql://<host>:3306/taskmanager_db
+spring.datasource.username=<username>
+spring.datasource.password=<password>
+spring.jpa.hibernate.ddl-auto=validate
+```
+
+Run with the production profile:
+
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=prod
+```
+
+Or run the packaged jar:
+
+```bash
+java -jar target/taskManager-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+```
+
+## Application URLs
+
+| Page | URL |
+| --- | --- |
+| Landing page | `http://localhost:8080/` |
+| Sign up | `http://localhost:8080/users/sign-up` |
+| Sign in | `http://localhost:8080/users/sign-in` |
+| H2 console | `http://localhost:8080/h2-console` |
+| Swagger UI | `http://localhost:8080/swagger-ui/index.html` |
+| OpenAPI JSON | `http://localhost:8080/v3/api-docs` |
+
+## REST API
+
+### Authentication
+
+Generate a JWT token:
+
+```http
+POST /apis/authenticate
+Content-Type: application/json
+```
+
+```json
+{
+  "username": "user@example.com",
+  "password": "password123"
+}
+```
+
+Use the returned token for protected API calls:
+
+```http
+Authorization: Bearer <jwt-token>
+```
+
+### Task Endpoints
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/apis/tasks/user/{userId}` | Get all tasks for a user |
+| `GET` | `/apis/tasks/{taskId}` | Get one task by ID |
+| `POST` | `/apis/tasks/new/{userId}` | Create a task for a user |
+| `PUT` | `/apis/tasks/{taskId}` | Update a task |
+| `DELETE` | `/apis/tasks/{taskId}` | Delete a task |
+
+Example task payload:
+
+```json
+{
+  "title": "Prepare release notes",
+  "description": "Summarize completed work and deployment steps",
+  "dueDate": "2026-06-30",
+  "completed": false
+}
+```
+
+## API Documentation
+
+After starting the application, visit:
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
+Swagger UI provides an interactive view of the available REST endpoints and request/response schemas.
+
+## Build and Test
+
+Compile and run tests:
+
+```bash
+./mvnw clean test
+```
+
+Build the executable jar:
+
+```bash
+./mvnw clean package
+```
+
+Run the jar:
+
+```bash
+java -jar target/taskManager-0.0.1-SNAPSHOT.jar
+```
+
+## Docker
+
+A `Dockerfile` is included for container builds:
+
+```bash
+docker build -t task-manager .
+docker run --rm -p 8080:8080 task-manager
+```
+
+Note: the Maven build currently targets Java 21. Keep the Docker base images aligned with the Java version in `pom.xml` before relying on container builds.
+
+## CI and Code Quality
+
+- `Jenkinsfile` defines a Jenkins pipeline for build automation.
+- `qodana.yaml` contains Qodana configuration for static analysis.
+- Maven wrapper files are included so CI agents do not need a global Maven installation.
+
+## Troubleshooting
+
+| Problem | Fix |
+| --- | --- |
+| `Unsupported class file major version` | Use JDK 21 for local builds and runtime. |
+| Swagger URL returns 404 | Use `/swagger-ui/index.html` with Springdoc OpenAPI 2.x. |
+| H2 console login fails | Confirm the JDBC URL is `jdbc:h2:mem:taskmanager_db`, username is `sa`, and password is blank. |
+| MySQL connection fails in `prod` | Verify host, port, database name, credentials, firewall rules, and that MySQL is reachable. |
+| Lombok-generated methods are missing in IDE | Enable annotation processing and install the Lombok plugin if your IDE requires it. |
+
+## License
+
+No license file is currently included. Add one before distributing or reusing this project publicly.
